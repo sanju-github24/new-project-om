@@ -1,9 +1,10 @@
 import {useState} from 'react';
-import {Link} from 'react-router-dom'
+import {Link,useNavigate} from 'react-router-dom'
 function Signup() {
   const [formData, setFormData] = useState({});
   const [error,setError]= useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -12,37 +13,38 @@ function Signup() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      setError(false);
-  
-      const res = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-  
-      const data = await res.json();
-      setLoading(false);
-  
-      if (!res.ok) {
-        setError(data.error || "Signup failed");
-        return;
-      }
-  
-      // Success case
-      console.log(data);
-      setError(false);
-      // Redirect or show success here
-    } catch (err) {
-      setLoading(false);
-      setError("Something went wrong. Please try again.");
+  e.preventDefault();
+  try {
+    setLoading(true);
+    setError(false);
+
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await res.json();
+    setLoading(false);
+    navigate('/sign-in');
+
+    if (!res.ok) {
+      setError(data.error || "Signup failed");
+      return;
     }
-  };
-  
+
+    // Success case
+    console.log(data);
+    setError(false);
+    // Redirect or show success here
+  } catch (err) {
+    setLoading(false);
+    setError("Something went wrong. Please try again.");
+  }
+};
+
   
   return (
     <div className='p-3 max-w-lg mx-auto'>
