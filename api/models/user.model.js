@@ -18,6 +18,11 @@ const UserSchema = new mongoose.Schema({
         required: true,
         
     },
+    profilePicture: {
+        type: String,
+        default: 'https://www.freeiconspng.com/uploads/am-a-19-year-old-multimedia-artist-student-from-manila--21.png',
+    },
+
 },{timestamps: true});
 
 const User = mongoose.model('User', UserSchema);
